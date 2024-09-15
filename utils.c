@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:19:04 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/11 16:44:40 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/12 17:33:23 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,14 @@ int	ft_atoi(const char *str)
 		str++;
 	}
 	return ((result * sign));
+}
+
+size_t	ft_strlen(const char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
 }

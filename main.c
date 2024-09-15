@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:05:21 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/11 17:24:25 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/15 05:46:39 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 
 int	main(int ac, char **av)
 {
-	t_philo			philos[PHILO_MAX];
 	t_program		program;
-	pthread_mutex_t	forks[PHILO_MAX];
 
 	if (ac != 5 && ac != 6)
+		return (printf("Invalid Num of Arguments"), 1);
+	if (!parsing(av))
 		return (1);
-	if (!parsing(av, philos))
+	if (init_program(&program, av))
 		return (1);
-	init_program(&program, philos, forks);
+	call_to_action(&program);
+	destory_all(NULL, &program);
 	return (0);
 }
