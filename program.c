@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 16:36:39 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/22 03:01:29 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/22 03:10:30 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	*routine(void *pointer)
 	t_program	*program;
 	t_philo		*philo;
 	int			repeat;
-	long long	start_time;
+	// long long	start_time;
 
 	philo = (t_philo *)pointer;
 	program = ((t_philo *)pointer)->program;
@@ -64,12 +64,16 @@ void	*routine(void *pointer)
 		repeat = 2;
 	else
 		repeat = philo->num_times_to_eat + 1;
-	if (philo->id % 2 == 0)
-	{
-		start_time = get_current_time();
-		while (get_current_time() < start_time + 200)
-			usleep(100);
-	}
+// Remove this part entirely or reduce it significantly
+if (philo->id % 2 == 0) {
+    long long start_time = get_current_time();
+    long long delay = 100; // You can tweak this further
+    while (get_current_time() < start_time + delay) {
+        usleep(50);
+    }
+
+}
+
 	while (--repeat && !program->dead_flag)
 	{
 		if (!eat(philo))

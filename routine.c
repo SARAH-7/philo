@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:56 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/22 03:03:24 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/22 03:20:11 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,14 @@ int	eat(t_philo *philo)
 	}
 	else
 	{
-		pthread_mutex_unlock(&(program->forks_lock[philo->l_fork]));
 		program->forks[philo->l_fork] = 0;
+		pthread_mutex_unlock(&(program->forks_lock[philo->l_fork]));
 		pthread_mutex_unlock(&(program->forks_lock[philo->r_fork]));
 		return (0);
 	}
 	print_message(program, "is eating", philo->id);
 	philo->last_meal = get_current_time();
-	(philo->eating)++;
+	philo->eating++;
 	waiting(philo->time_to_eat);
 	pthread_mutex_unlock(&(program->forks_lock[philo->r_fork]));
 	program->forks[philo->r_fork] = 0;
