@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:56 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/21 05:53:09 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/22 03:03:24 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,39 @@ void	sleeping(t_program *program, t_philo *philo)
 	waiting(philo->time_to_sleep);
 }
 
-void	eat(t_philo *philo)
+int	eat(t_philo *philo)
 {
 	t_program	*program;
 
 	program = philo->program;
 	pthread_mutex_lock(&(program->forks_lock[philo->l_fork]));
-	print_message(program, "has taken left fork", philo->id);
+	if (program->forks[philo->l_fork] == 0)
+	{
+		program->forks[philo->l_fork] = 1;
+		print_message(program, "has taken left fork", philo->id);
+	}
+	else
+		return (pthread_mutex_unlock(&(program->forks_lock[philo->l_fork])), 0);
 	pthread_mutex_lock(&(program->forks_lock[philo->r_fork]));
-	print_message(program, "has taken right fork", philo->id);
+	if (program->forks[philo->r_fork] == 0)
+	{
+		program->forks[philo->r_fork] = 1;
+		print_message(program, "has taken right fork", philo->id);
+	}
+	else
+	{
+		pthread_mutex_unlock(&(program->forks_lock[philo->l_fork]));
+		program->forks[philo->l_fork] = 0;
+		pthread_mutex_unlock(&(program->forks_lock[philo->r_fork]));
+		return (0);
+	}
 	print_message(program, "is eating", philo->id);
-	waiting(philo->time_to_eat);
 	philo->last_meal = get_current_time();
 	(philo->eating)++;
+	waiting(philo->time_to_eat);
 	pthread_mutex_unlock(&(program->forks_lock[philo->r_fork]));
+	program->forks[philo->r_fork] = 0;
 	pthread_mutex_unlock(&(program->forks_lock[philo->l_fork]));
+	program->forks[philo->l_fork] = 0;
+	return (1);
 }

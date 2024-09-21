@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:15:18 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/21 05:35:30 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/22 02:12:41 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ int	init_mutex(t_program *program)
 	}
 	if (pthread_mutex_init(&(program->write_lock), NULL))
 		return (0);
-	if (pthread_mutex_init(&(program->eating_counter_lock), NULL))
-		return (0);
 	return (1);
 }
 
@@ -36,8 +34,12 @@ void	init_philos(t_program *program, char **av)
 	program->num_of_philos = ft_atoi(av[1]);
 	program->dead_flag = 0;
 	program->eating_counter = 0;
-	i = program->num_of_philos + 1;
-	while (--i >= 1)
+	program->forks = malloc(sizeof(int) * (program->num_of_philos + 1));
+	i = 0;
+	while (++i <= program->num_of_philos)
+		program->forks[i] = 0;
+	i = 0;
+	while (++i <= program->num_of_philos)
 	{
 		program->philos[i].time_to_survive = ft_atoi(av[2]);
 		program->philos[i].time_to_eat = ft_atoi(av[3]);
@@ -49,7 +51,7 @@ void	init_philos(t_program *program, char **av)
 		program->philos[i].id = i;
 		program->philos[i].eating = 0;
 		program->philos[i].l_fork = i;
-		program->philos[i].r_fork = (i - 1) % program->num_of_philos;
+		program->philos[i].r_fork = (i + 1) % program->num_of_philos;
 		program->philos[i].last_meal = 0;
 		program->philos[i].program = program;
 	}

@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:03:05 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/21 05:44:47 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/22 01:03:08 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ typedef struct s_philo
 	int					time_to_sleep;
 }					t_philo;
 
-	// int				*forks;
 typedef struct s_program
 {
 	int				num_of_philos;
@@ -46,9 +45,9 @@ typedef struct s_program
 	int				dead_flag;
 	long long		start_time;
 	int				eating_counter;
+	int				*forks;
 	t_philo			philos[PHILO_MAX];
 	pthread_mutex_t	write_lock;
-	pthread_mutex_t	eating_counter_lock;
 	pthread_mutex_t	forks_lock[PHILO_MAX];
 
 }					t_program;
@@ -63,7 +62,7 @@ int			call_to_action(t_program *program);
 size_t		ft_strlen(const char *s);
 void		*monitor(void *pointer);
 void		waiting(size_t milliseconds);
-void		eat(t_philo *philo);
+int			eat(t_philo *philo);
 void		sleeping(t_program *program, t_philo *philo);
 void		think(t_philo *philo);
 void		print_message(t_program *program, char *str, int id);

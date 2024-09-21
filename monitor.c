@@ -6,20 +6,17 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:10:02 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/21 05:08:52 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/22 03:01:57 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	print_message(t_program *program, char *str, int id)
+void	print_message(t_program *program, char *message, int id)
 {
-	long long	time;
-
-	time = get_current_time();
 	pthread_mutex_lock(&(program->write_lock));
-	if (!program->dead_flag)
-		printf("%llims [id:%d] %s\n", time - program->start_time, id, str);
+	printf("%lldms [id:%d] %s\n", get_current_time()
+		- program->start_time, id, message);
 	pthread_mutex_unlock(&(program->write_lock));
 }
 

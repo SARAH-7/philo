@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 16:36:39 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/21 06:19:24 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/22 03:01:29 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	exit_dining(t_program *program)
 	while (++i <= program->num_of_philos)
 		pthread_mutex_destroy(&(program->forks_lock[i]));
 	pthread_mutex_destroy(&(program->write_lock));
-	pthread_mutex_destroy(&(program->eating_counter_lock));
 }
 
 int	end_program_checker(t_program *program, t_philo *philo)
@@ -29,8 +28,8 @@ int	end_program_checker(t_program *program, t_philo *philo)
 	int			flag;
 
 	flag = 1;
-	i = 1;
-	while (i <= program->num_of_philos)
+	i = 0;
+	while (++i <= program->num_of_philos)
 	{
 		if (philo[i].num_times_to_eat == -1)
 		{
@@ -57,34 +56,28 @@ void	*routine(void *pointer)
 	t_program	*program;
 	t_philo		*philo;
 	int			repeat;
+	long long	start_time;
 
 	philo = (t_philo *)pointer;
-	program = philo->program;
+	program = ((t_philo *)pointer)->program;
 	if (philo->num_times_to_eat == -1)
-		repeat = 1;
+		repeat = 2;
 	else
-		repeat = philo->num_times_to_eat;
+		repeat = philo->num_times_to_eat + 1;
 	if (philo->id % 2 == 0)
-		usleep(150);
-	while (repeat > 0 && !program->dead_flag)
 	{
-		eat(philo);
-		pthread_mutex_lock(&(program->eating_counter_lock));
-		program->eating_counter++;
-		pthread_mutex_unlock(&(program->eating_counter_lock));
-		pthread_mutex_lock(&(program->eating_counter_lock));
-		if (program->eating_counter == program->num_of_philos)
-		{
-			pthread_mutex_unlock(&(program->eating_counter_lock));
+		start_time = get_current_time();
+		while (get_current_time() < start_time + 200)
+			usleep(100);
+	}
+	while (--repeat && !program->dead_flag)
+	{
+		if (!eat(philo))
 			return (NULL);
-		}
-		pthread_mutex_unlock(&(program->eating_counter_lock));
-		if (repeat > 0)
-		{
-			sleeping(program, philo);
-			print_message(program, "is thinking", philo->id);
-		}
-		repeat--;
+		sleeping(program, philo);
+		print_message(program, "is thinking", philo->id);
+		if (philo->num_times_to_eat == -1)
+			repeat = 2;
 	}
 	return (NULL);
 }
@@ -95,9 +88,9 @@ void	death_checker(t_program *program, t_philo *philo, int flag)
 	long long	time;
 
 	i = 0;
-	time = time_diff(philo[i].last_meal, get_current_time());
 	while (++i <= program->num_of_philos && !program->dead_flag)
 	{
+		time = time_diff(philo[i].last_meal, get_current_time());
 		if (time >= program->philos[i].time_to_survive && !flag)
 		{
 			print_message(program, "died", philo[i].id);
@@ -125,13 +118,10 @@ int	call_to_action(t_program *program)
 	{
 		if (pthread_join(philo[i].thread, NULL))
 			return (exit_dining(program), 1);
-		pthread_mutex_lock(&(program->eating_counter_lock));
-		if (program->eating_counter == program->num_of_philos)
-		{
-			pthread_mutex_unlock(&(program->eating_counter_lock));
+		if ((program->eating_counter == program->num_of_philos)
+			|| philo->num_times_to_eat == program->eating_counter
+			/ program->num_of_philos)
 			break ;
-		}
-		pthread_mutex_unlock(&(program->eating_counter_lock));
 	}
 	death_checker(program, program->philos,
 		end_program_checker(program, program->philos));
