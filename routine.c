@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:56 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/22 08:45:49 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/22 09:18:09 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ int	eat(t_philo *philo)
 		return (0);
 	}
 	print_message(program, "is eating", philo->id);
-	philo->last_meal = get_current_time() - philo->start_time;
+	// philo->last_meal = get_current_time() - philo->start_time;
 	philo->eating++;
-	waiting(philo->time_to_eat);
+	usleep(philo->time_to_eat * 1000);
 	pthread_mutex_unlock(&(program->forks_lock[philo->r_fork]));
 	program->forks[philo->r_fork] = 0;
 	pthread_mutex_unlock(&(program->forks_lock[philo->l_fork]));
