@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:56 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/22 09:18:09 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/22 10:43:25 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,17 @@ int	eat(t_philo *philo)
 	else
 	{
 		program->forks[philo->l_fork] = 0;
-		pthread_mutex_unlock(&(program->forks_lock[philo->l_fork]));
-		pthread_mutex_unlock(&(program->forks_lock[philo->r_fork]));
-		return (0);
+		return (pthread_mutex_unlock(&(program->forks_lock[philo->l_fork])),
+			pthread_mutex_unlock(&(program->forks_lock[philo->r_fork])), 0);
 	}
 	print_message(program, "is eating", philo->id);
-	// philo->last_meal = get_current_time() - philo->start_time;
+	philo->last_meal = get_current_time() - philo->start_time + philo->time_to_eat;
+	// printf("in last_meal %lld\n", philo->last_meal);
 	philo->eating++;
 	usleep(philo->time_to_eat * 1000);
-	pthread_mutex_unlock(&(program->forks_lock[philo->r_fork]));
 	program->forks[philo->r_fork] = 0;
-	pthread_mutex_unlock(&(program->forks_lock[philo->l_fork]));
+	pthread_mutex_unlock(&(program->forks_lock[philo->r_fork]));
 	program->forks[philo->l_fork] = 0;
+	pthread_mutex_unlock(&(program->forks_lock[philo->l_fork]));
 	return (1);
 }
