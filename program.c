@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 16:36:39 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/22 03:10:30 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/22 08:54:29 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,33 +55,30 @@ void	*routine(void *pointer)
 {
 	t_program	*program;
 	t_philo		*philo;
-	int			repeat;
-	// long long	start_time;
+	long long	current_time;
+	long long	time_remaining;
 
 	philo = (t_philo *)pointer;
-	program = ((t_philo *)pointer)->program;
-	if (philo->num_times_to_eat == -1)
-		repeat = 2;
-	else
-		repeat = philo->num_times_to_eat + 1;
-// Remove this part entirely or reduce it significantly
-if (philo->id % 2 == 0) {
-    long long start_time = get_current_time();
-    long long delay = 100; // You can tweak this further
-    while (get_current_time() < start_time + delay) {
-        usleep(50);
-    }
-
-}
-
-	while (--repeat && !program->dead_flag)
+	program = philo->program;
+	philo->last_meal = get_current_time() - philo->start_time;
+	while (!program->dead_flag)
 	{
-		if (!eat(philo))
+		pthread_mutex_lock(&(program->write_lock));
+		current_time = get_current_time() - philo->start_time;
+		time_remaining = philo->time_to_survive
+			- time_diff(philo->last_meal, current_time);
+		if (time_remaining < philo->time_to_eat)
+		{
+			program->dead_flag = 1;
+			pthread_mutex_unlock(&(program->write_lock));
 			return (NULL);
+		}
+		pthread_mutex_unlock(&(program->write_lock));
+		if (!eat(philo))
+			return (usleep(philo->time_to_survive * 1000), NULL);
+		philo->last_meal = get_current_time() - philo->start_time;
 		sleeping(program, philo);
 		print_message(program, "is thinking", philo->id);
-		if (philo->num_times_to_eat == -1)
-			repeat = 2;
 	}
 	return (NULL);
 }
@@ -91,10 +88,9 @@ void	death_checker(t_program *program, t_philo *philo, int flag)
 	int			i;
 	long long	time;
 
-	i = 0;
-	while (++i <= program->num_of_philos && !program->dead_flag)
+	for (i = 0; i < program->num_of_philos; i++)
 	{
-		time = time_diff(philo[i].last_meal, get_current_time());
+		time = time_diff(philo[i].last_meal, get_current_time() - philo->start_time);
 		if (time >= program->philos[i].time_to_survive && !flag)
 		{
 			print_message(program, "died", philo[i].id);
@@ -103,6 +99,7 @@ void	death_checker(t_program *program, t_philo *philo, int flag)
 		}
 	}
 }
+
 
 int	call_to_action(t_program *program)
 {
@@ -122,10 +119,6 @@ int	call_to_action(t_program *program)
 	{
 		if (pthread_join(philo[i].thread, NULL))
 			return (exit_dining(program), 1);
-		if ((program->eating_counter == program->num_of_philos)
-			|| philo->num_times_to_eat == program->eating_counter
-			/ program->num_of_philos)
-			break ;
 	}
 	death_checker(program, program->philos,
 		end_program_checker(program, program->philos));

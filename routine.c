@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:56 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/22 03:20:11 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/22 08:45:49 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	waiting(size_t ms)
 
 	start = get_current_time();
 	end = start + ms;
-	while (get_current_time() < (long long)end)
+	while ((get_current_time()) < (long long)end)
 		usleep(100);
 }
 
@@ -48,7 +48,7 @@ int	eat(t_philo *philo)
 	else
 		return (pthread_mutex_unlock(&(program->forks_lock[philo->l_fork])), 0);
 	pthread_mutex_lock(&(program->forks_lock[philo->r_fork]));
-	if (program->forks[philo->r_fork] == 0)
+	if (program->forks[philo->r_fork] == 0 && program->num_of_philos != 1)
 	{
 		program->forks[philo->r_fork] = 1;
 		print_message(program, "has taken right fork", philo->id);
@@ -61,7 +61,7 @@ int	eat(t_philo *philo)
 		return (0);
 	}
 	print_message(program, "is eating", philo->id);
-	philo->last_meal = get_current_time();
+	philo->last_meal = get_current_time() - philo->start_time;
 	philo->eating++;
 	waiting(philo->time_to_eat);
 	pthread_mutex_unlock(&(program->forks_lock[philo->r_fork]));

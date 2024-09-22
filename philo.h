@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:03:05 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/22 01:03:08 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/22 06:57:16 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_philo
 	int					r_fork;
 	int					l_fork;
 	int					*dead;
+	long long			start_time;
 	long long			time_to_survive;
 	int					num_times_to_eat;
 	int					time_to_eat;

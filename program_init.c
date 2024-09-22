@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:15:18 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/22 03:17:19 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/22 06:04:55 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	init_philos(t_program *program, char **av)
 		program->philos[i].eating = 0;
 		program->philos[i].l_fork = i;
 		program->philos[i].r_fork = (i + 1) % program->num_of_philos;
-		if (program->philos[i].r_fork == 0)
+		if (program->philos[i].r_fork == 0 && program->num_of_philos > 1)
 			program->philos[i].r_fork = program->num_of_philos;
 		program->philos[i].last_meal = 0;
 		program->philos[i].program = program;
