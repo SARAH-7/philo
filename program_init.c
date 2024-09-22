@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:15:18 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/22 06:04:55 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/22 21:12:01 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	init_philos(t_program *program, char **av)
 	program->num_of_philos = ft_atoi(av[1]);
 	program->dead_flag = 0;
 	program->eating_counter = 0;
+	program->all_ate_flag = 0;
 	program->forks = malloc(sizeof(int) * (program->num_of_philos + 1));
 	i = 0;
 	while (++i <= program->num_of_philos)

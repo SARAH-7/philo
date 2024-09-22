@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:03:05 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/22 06:57:16 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/22 21:11:49 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_program
 	int				dead_flag;
 	long long		start_time;
 	int				eating_counter;
+	int				all_ate_flag;
 	int				*forks;
 	t_philo			philos[PHILO_MAX];
 	pthread_mutex_t	write_lock;

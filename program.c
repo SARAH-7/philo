@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 16:36:39 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/22 12:04:22 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/22 21:18:19 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,15 +78,12 @@ void	*routine(void *pointer)
 	{
 		pthread_mutex_lock(&(program->write_lock));
 		current_time = get_current_time() - philo->start_time;
-		printf("\nid %d\n", philo->id);
-		printf("current %lld\n", current_time);
-		printf("last_meal %lld\n", philo->last_meal);
 		time_remaining = philo->time_to_survive
 			- time_diff(philo->last_meal, current_time);
-		printf("time_remaining %lld\n\n", time_remaining);
 		if (time_remaining < philo->time_to_eat)
 		{
 			program->dead_flag = 1;
+			program->all_ate_flag = 0;
 			pthread_mutex_unlock(&(program->write_lock));
 			return (NULL);
 		}
@@ -95,15 +92,12 @@ void	*routine(void *pointer)
 			return (usleep(philo->time_to_survive * 1000), NULL);
 		pthread_mutex_lock(&(program->write_lock));
 		current_time = get_current_time() - philo->start_time;
-		printf("\nid %d\n", philo->id);
-		printf("current %lld\n", current_time);
-		printf("afer last_meal %lld\n", philo->last_meal);
 		time_remaining = philo->time_to_survive
 			- time_diff(philo->last_meal, current_time);
-		printf("time_remaining %lld\n\n", time_remaining);
 		if (time_remaining < philo->time_to_eat)
 		{
 			program->dead_flag = 1;
+			program->all_ate_flag = 0;
 			pthread_mutex_unlock(&(program->write_lock));
 			return (NULL);
 		}
@@ -121,14 +115,18 @@ void	death_checker(t_program *program, t_philo *philo, int flag)
 	int			i;
 	long long	time;
 
-	for (i = 0; i < program->num_of_philos; i++)
+	i = 0;
+	while (++i <= program->num_of_philos)
 	{
 		time = time_diff(philo[i].last_meal, get_current_time() - philo->start_time);
-		if (time >= program->philos[i].time_to_survive && !flag)
+		if (flag == program->all_ate_flag)
 		{
-			print_message(program, "died", philo[i].id);
-			program->dead_flag = 1;
-			return ;
+			if (time >= program->philos[i].time_to_survive && (!flag))
+			{
+				print_message(program, "died", philo[i].id);
+				program->dead_flag = 1;
+				return ;
+			}
 		}
 	}
 }
