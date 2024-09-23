@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:03:05 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/22 21:11:49 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/24 02:12:52 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ long long	time_diff(long long past, long long pres);
 int			call_to_action(t_program *program);
 size_t		ft_strlen(const char *s);
 void		*monitor(void *pointer);
-void		waiting(size_t milliseconds);
+void		waiting(size_t ms);
 int			eat(t_philo *philo);
 void		sleeping(t_program *program, t_philo *philo);
 void		think(t_philo *philo);

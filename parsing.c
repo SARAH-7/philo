@@ -6,14 +6,12 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:42:08 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/20 20:14:41 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/24 02:16:59 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-// if (i == 1 && ft_atoi(av[i]) <= 1)
-// 	return (printf("0ms [id:1] has taken a fork\n0ms [id:1] died\n"), 0);
 void	nums_check(char **av)
 {
 	int	i;
