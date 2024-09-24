@@ -6,121 +6,87 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:56 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/24 03:31:59 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/26 23:12:47 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	mid_death(t_philo *philo)
+int	check_death_main(t_philo *philo)
 {
-	pthread_mutex_lock(&(philo->program->write_lock));
-	if (get_current_time() - philo->start_time - philo->last_meal
-		+ philo->time_to_eat > philo->time_to_survive)
+	pthread_mutex_lock(&(philo->program->death_lock));
+	if (philo->program->dead_flag)
 	{
-		philo->program->dead_flag = 1;
-		philo->program->all_ate_flag = 0;
-		pthread_mutex_unlock(&(philo->program->write_lock));
+		pthread_mutex_unlock(&(philo->program->death_lock));
 		return (1);
 	}
-	pthread_mutex_unlock(&(philo->program->write_lock));
+	pthread_mutex_unlock(&(philo->program->death_lock));
 	return (0);
 }
 
-void	waiting(size_t ms)
+int	ability_to_eat(t_philo *philo)
 {
-	size_t	start;
-	size_t	end;
+	long long	time;
+
+	if (check_death_main(philo))
+		return (0);
+	if (get_current_time() - philo->start_time - philo->last_meal
+		+ philo->time_to_eat > philo->time_to_survive)
+	{
+		time = get_current_time() - philo->start_time;
+		if (!waiting(philo->time_to_survive - time, philo))
+			return (0);
+		pthread_mutex_lock(&(philo->program->death_lock));
+		philo->program->dead_flag = 1;
+		print_message(philo->program, "died", philo->id);
+		philo->program->no_print = 1;
+		pthread_mutex_unlock(&(philo->program->death_lock));
+		return (0);
+	}
+	return (1);
+}
+
+int	waiting(long long ms, t_philo *philo)
+{
+	long long		start;
+	long long		end;
 
 	start = get_current_time();
 	end = start + ms;
-	while ((get_current_time()) < (long long)end)
+	while ((get_current_time()) < end)
+	{
+		if (check_death_main(philo))
+			return (0);
 		usleep(100);
+	}
+	return (1);
 }
 
-long long	time_diff(long long past, long long pres)
-{
-	return (pres - past);
-}
-
-void	sleeping(t_program *program, t_philo *philo)
+int	sleeping(t_program *program, t_philo *philo)
 {
 	print_message(program, "is sleeping", philo->id);
-	waiting(philo->time_to_sleep);
+	if (!waiting(philo->time_to_sleep, philo))
+		return (0);
+	return (1);
 }
 
 int	eat(t_philo *philo)
 {
 	t_program	*program;
 
+	if (check_death_main(philo))
+		return (0);
 	program = philo->program;
 	if (philo->id % 2)
-	{
-		pthread_mutex_lock(&(program->forks_lock[philo->r_fork]));
-		if (program->forks[philo->r_fork] == 0)
-		{
-			program->forks[philo->r_fork] = 1;
-			print_message(program, "has taken right fork", philo->id);
-		}
-		else
-			return (pthread_mutex_unlock(
-					&(program->forks_lock[philo->r_fork])), 0);
-		if (mid_death(philo))
-		{
-			program->forks[philo->r_fork] = 0;
-			return (pthread_mutex_unlock(
-					&(program->forks_lock[philo->r_fork])), 0);
-		}
-		pthread_mutex_lock(&(program->forks_lock[philo->l_fork]));
-		if (program->forks[philo->l_fork] == 0 && program->num_of_philos != 1)
-		{
-			program->forks[philo->l_fork] = 1;
-			print_message(program, "has taken left fork", philo->id);
-		}
-		else
-		{
-			program->forks[philo->r_fork] = 0;
-			return (pthread_mutex_unlock(&(program->forks_lock[philo->l_fork])),
-				pthread_mutex_unlock(&(program->forks_lock[philo->r_fork])), 0);
-		}
-	}
+		odd_philos(program, philo);
 	else
-	{
-		pthread_mutex_lock(&(program->forks_lock[philo->l_fork]));
-		if (program->forks[philo->l_fork] == 0)
-		{
-			program->forks[philo->l_fork] = 1;
-			print_message(program, "has taken left fork", philo->id);
-		}
-		else
-			return (pthread_mutex_unlock(
-					&(program->forks_lock[philo->l_fork])), 0);
-		if (mid_death(philo))
-		{
-			program->forks[philo->l_fork] = 1;
-			return (pthread_mutex_unlock(
-					&(program->forks_lock[philo->l_fork])),
-				pthread_mutex_unlock(&(program->forks_lock[philo->r_fork])), 0);
-		}
-		pthread_mutex_lock(&(program->forks_lock[philo->r_fork]));
-		if (program->forks[philo->r_fork] == 0 && program->num_of_philos != 1)
-		{
-			program->forks[philo->r_fork] = 1;
-			print_message(program, "has taken right fork", philo->id);
-		}
-		else
-		{
-			program->forks[philo->l_fork] = 0;
-			return (pthread_mutex_unlock(&(program->forks_lock[philo->r_fork])),
-				pthread_mutex_unlock(&(program->forks_lock[philo->l_fork])), 0);
-		}
-	}
-	print_message(program, "is eating", philo->id);
+		even_philos(program, philo);
+	if (check_death_main(philo))
+		return (print_message(philo->program, "died", philo->id), 0);
 	philo->eating++;
-	waiting(philo->time_to_eat);
-	pthread_mutex_lock(&(philo->program->write_lock));
+	if (!waiting(philo->time_to_eat, philo))
+		return (0);
 	philo->last_meal = get_current_time();
-	pthread_mutex_unlock(&(philo->program->write_lock));
 	program->forks[philo->r_fork] = 0;
 	pthread_mutex_unlock(&(program->forks_lock[philo->r_fork]));
 	program->forks[philo->l_fork] = 0;

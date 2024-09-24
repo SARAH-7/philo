@@ -6,7 +6,7 @@
 #    By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/14 21:27:41 by sbakhit           #+#    #+#              #
-#    Updated: 2024/09/15 02:36:57 by sbakhit          ###   ########.fr        #
+#    Updated: 2024/09/29 20:47:00 by sbakhit          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,9 +14,10 @@ NAME = philo
 
 HEADER = philo.h
 
-FLAGS = -Wall -Wextra -Werror -fsanitize=address -pthread -g3
+FLAGS = -Wall -Wextra -Werror -pthread -g3
 
-SRC = main.c parsing.c utils.c program_init.c program.c monitor.c routine.c
+SRC = main.c parsing.c utils.c program_init.c program.c monitor.c routine.c \
+		eating_process.c routine_exec.c
 
 INCLUDE = -pthread
 

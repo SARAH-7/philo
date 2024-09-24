@@ -6,16 +6,17 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:19:04 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/20 20:14:32 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/25 21:31:08 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ft_isdigit(int c)
+int	ft_isdigit(int c)
 {
 	if (!(c >= '0' && c <= '9'))
-		write(2, "Invalid Entries\n", 16);
+		return (write(2, "Invalid Entries\n", 16), 0);
+	return (1);
 }
 
 static int	check_for_overflow(long long result, int sign, char a)

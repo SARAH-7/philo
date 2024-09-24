@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:03:05 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/24 02:12:52 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/27 21:38:39 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@
 # include <limits.h>
 # include <pthread.h>
 # include <sys/time.h>
-
-# define PHILO_MAX 200
 
 typedef struct s_philo
 {
@@ -44,29 +42,37 @@ typedef struct s_program
 	int				num_of_philos;
 	int				time_to_sleep;
 	int				dead_flag;
+	int				no_print;
 	long long		start_time;
 	int				eating_counter;
-	int				all_ate_flag;
 	int				*forks;
-	t_philo			philos[PHILO_MAX];
+	int				all_ate_flag;
+	t_philo			*philos;
+	pthread_mutex_t	all_ate_lock;
 	pthread_mutex_t	write_lock;
-	pthread_mutex_t	forks_lock[PHILO_MAX];
-
+	pthread_mutex_t	death_lock;
+	pthread_mutex_t	death_message_lock;
+	pthread_mutex_t	*forks_lock;
 }					t_program;
 
-void		parsing(char **av);
-void		ft_isdigit(int c);
+int			parsing(char **av);
+int			ft_isdigit(int c);
 int			ft_atoi(const char *str);
 void		init_program(t_program *program, char **av);
 long long	get_current_time(void);
-long long	time_diff(long long past, long long pres);
 int			call_to_action(t_program *program);
 size_t		ft_strlen(const char *s);
 void		*monitor(void *pointer);
-void		waiting(size_t ms);
+int			waiting(long long ms, t_philo *philo);
 int			eat(t_philo *philo);
-void		sleeping(t_program *program, t_philo *philo);
+int			sleeping(t_program *program, t_philo *philo);
 void		think(t_philo *philo);
 void		print_message(t_program *program, char *str, int id);
 int			dead_loop(t_philo *philo);
+void		even_philos(t_program *program, t_philo *philo);
+void		odd_philos(t_program *program, t_philo *philo);
+int			ability_to_eat(t_philo *philo);
+void		exit_dining(t_program *program);
+int			check_death_main(t_philo *philo);
+void		*routine(void *pointer);
 #endif

@@ -6,26 +6,29 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:42:08 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/24 02:16:59 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/25 21:36:37 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	nums_check(char **av)
+int	nums_check(char **av)
 {
 	int	i;
 
+	if (ft_atoi(av[1]) >= INT_MAX)
+		return (write(2, "Invalid Num of Philos\n", 22), 0);
 	i = 1;
 	while (av[i])
 	{
 		if (ft_atoi(av[i]) <= 0)
-			write(2, "Input Should Be Greater than 0\n", 31);
+			return (write(2, "Input Should Be Greater than 0\n", 31), 0);
 		i++;
 	}
+	return (1);
 }
 
-void	parsing(char **av)
+int	parsing(char **av)
 {
 	int	i;
 	int	j;
@@ -36,10 +39,13 @@ void	parsing(char **av)
 		j = 0;
 		while (av[i][j])
 		{
-			ft_isdigit(av[i][j]);
+			if (!ft_isdigit(av[i][j]))
+				return (0);
 			j++;
 		}
 		i++;
 	}
-	nums_check(av);
+	if (!nums_check(av))
+		return (0);
+	return (1);
 }
