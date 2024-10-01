@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:03:05 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/27 21:38:39 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/10/01 20:58:40 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ typedef struct s_program
 	int				time_to_sleep;
 	int				dead_flag;
 	int				no_print;
-	long long		start_time;
 	int				eating_counter;
 	int				*forks;
 	int				all_ate_flag;
@@ -60,14 +59,15 @@ int			ft_isdigit(int c);
 int			ft_atoi(const char *str);
 void		init_program(t_program *program, char **av);
 long long	get_current_time(void);
-int			call_to_action(t_program *program);
+void		call_to_action(t_program *program);
 size_t		ft_strlen(const char *s);
 void		*monitor(void *pointer);
 int			waiting(long long ms, t_philo *philo);
 int			eat(t_philo *philo);
 int			sleeping(t_program *program, t_philo *philo);
 void		think(t_philo *philo);
-void		print_message(t_program *program, char *str, int id);
+void		print_message(t_program *program, t_philo *philo,
+				char *message, int id);
 int			dead_loop(t_philo *philo);
 void		even_philos(t_program *program, t_philo *philo);
 void		odd_philos(t_program *program, t_philo *philo);

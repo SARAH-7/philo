@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:05:21 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/29 17:08:23 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/30 20:43:03 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,12 @@ int	main(int ac, char **av)
 	if (num_of_philos <= 0)
 		return (write(2, "Invalid Num of Philosophers\n", 28), 1);
 	program.philos = malloc(sizeof(t_philo) * (num_of_philos + 1));
-	program.forks_lock = malloc(sizeof(pthread_mutex_t) * (num_of_philos + 1));
-	if (!program.philos || !program.forks_lock)
+	if (!program.philos)
 		return (write(2, "Memory Allocation Failed\n", 26), 1);
+	program.forks_lock = malloc(sizeof(pthread_mutex_t) * (num_of_philos + 1));
+	if (!program.forks_lock)
+		return (write(2, "Memory Allocation Failed\n", 26)
+			, free(program.philos), 1);
 	init_program(&program, av);
 	call_to_action(&program);
 	free(program.philos);

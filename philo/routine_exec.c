@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 18:49:02 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/27 18:49:18 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/10/01 20:47:24 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	*routine(void *pointer)
 	{
 		if (!execute_eating_sleeping(program, philo))
 			return (NULL);
-		print_message(program, "is thinking", philo->id);
+		print_message(program, philo, "is thinking", philo->id);
 		if (philo->num_times_to_eat == -1)
 			repeat = 2;
 	}

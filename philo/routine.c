@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:56 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/30 20:02:27 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/10/03 03:08:19 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ability_to_eat(t_philo *philo)
 			return (0);
 		pthread_mutex_lock(&(philo->program->death_lock));
 		philo->program->dead_flag = 1;
-		print_message(philo->program, "died", philo->id);
+		print_message(philo->program, philo, "died", philo->id);
 		philo->program->no_print = 1;
 		pthread_mutex_unlock(&(philo->program->death_lock));
 		return (0);
@@ -64,7 +64,7 @@ int	waiting(long long ms, t_philo *philo)
 
 int	sleeping(t_program *program, t_philo *philo)
 {
-	print_message(program, "is sleeping", philo->id);
+	print_message(program, philo, "is sleeping", philo->id);
 	if (!waiting(philo->time_to_sleep, philo))
 		return (0);
 	return (1);
@@ -82,7 +82,7 @@ int	eat(t_philo *philo)
 	else
 		even_philos(program, philo);
 	if (check_death_main(philo))
-		return (print_message(philo->program, "died", philo->id), 0);
+		return (print_message(philo->program, philo, "died", philo->id), 0);
 	philo->eating++;
 	if (!waiting(philo->time_to_eat, philo))
 		return (0);

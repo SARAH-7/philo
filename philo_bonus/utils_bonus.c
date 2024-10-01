@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:19:04 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/29 22:28:05 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/09/30 19:44:23 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int	ft_isdigit(int c)
+int	ft_isdigit_bonus(int c)
 {
 	if (!(c >= '0' && c <= '9'))
 		return (write(2, "Invalid Entries\n", 16), 0);
@@ -34,7 +34,7 @@ static int	check_for_overflow(long long result, int sign, char a)
 	return (1);
 }
 
-int	ft_atoi(const char *str)
+int	ft_atoi_bonus(const char *str)
 {
 	int		sign;
 	long	result;
@@ -59,7 +59,7 @@ int	ft_atoi(const char *str)
 	return ((result * sign));
 }
 
-size_t	ft_strlen(const char *s)
+size_t	ft_strlen_bonus(const char *s)
 {
 	int	i;
 

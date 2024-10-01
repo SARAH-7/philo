@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/09/14 21:27:41 by sbakhit           #+#    #+#              #
-#    Updated: 2024/09/29 22:28:59 by sbakhit          ###   ########.fr        #
+#    Created: 2024/09/30 18:38:30 by sbakhit           #+#    #+#              #
+#    Updated: 2024/10/03 14:22:32 by sbakhit          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,10 +14,10 @@ NAME = philo_bonus
 
 HEADER = philo_bonus.h
 
-FLAGS = -Wall -Wextra -Werror -pthread -g3
+FLAGS = -Wall -Wextra -Werror -pthread
 
-SRC = main.c parsing.c utils.c program_init.c program.c monitor.c routine.c \
-		eating_process.c routine_exec.c
+SRC = main_bonus.c parsing_bonus.c utils_bonus.c program_init_bonus.c program_bonus.c \
+		monitor_bonus.c routine_bonus.c routine_exec_bonus.c 
 
 INCLUDE = -pthread
 

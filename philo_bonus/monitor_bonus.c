@@ -1,31 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   monitor.c                                          :+:      :+:    :+:   */
+/*   monitor_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:10:02 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/29 22:27:50 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/10/03 14:26:27 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-void	print_message(t_program *program, char *message, int id)
+void	print_message_bonus(t_philos *philo, char *message, int id)
 {
-	pthread_mutex_lock(&(program->death_message_lock));
-	if (!program->no_print)
-	{
-		pthread_mutex_lock(&(program->write_lock));
-		printf("%lldms [id:%d] %s\n", get_current_time()
-			- program->start_time, id, message);
-		pthread_mutex_unlock(&(program->write_lock));
-	}
-	pthread_mutex_unlock(&(program->death_message_lock));
+	sem_wait(philo->write_lock);
+	if (!philo->no_print)
+		printf("%lldms [id:%d] %s\n", get_current_time_bonus()
+			- philo->start_time, id, message);
+	sem_post(philo->write_lock);
 }
 
-long long	get_current_time(void)
+long long	get_current_time_bonus(void)
 {
 	struct timeval	time;
 

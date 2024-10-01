@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 16:36:39 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/30 20:18:07 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/10/01 20:54:00 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int	create_threads(t_program *program, t_philo *philo)
 	while (++i <= program->num_of_philos && !check_death_main(&philo[i]))
 	{
 		if (pthread_create(&philo[i].thread, NULL, routine, (void *)&philo[i]))
-			return (exit_dining(program), 1);
+			return (exit_dining(program), 0);
 	}
-	return (0);
+	return (1);
 }
 
 void	wait_for_end(t_program *program)
@@ -49,22 +49,21 @@ int	join_threads(t_program *program, t_philo *philo)
 	while (++i <= program->num_of_philos)
 	{
 		if (pthread_join(philo[i].thread, NULL))
-			return (exit_dining(program), 1);
+			return (exit_dining(program), 0);
 	}
-	return (0);
+	return (1);
 }
 
-int	call_to_action(t_program *program)
+void	call_to_action(t_program *program)
 {
 	t_philo	*philo;
 
 	philo = program->philos;
-	program->start_time = get_current_time();
-	if (create_threads(program, philo))
-		return (1);
+	if (!create_threads(program, philo))
+		return ;
 	wait_for_end(program);
-	if (join_threads(program, philo))
-		return (1);
+	if (!join_threads(program, philo))
+		return ;
 	exit_dining(program);
-	return (0);
+	return ;
 }
