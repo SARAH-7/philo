@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:56 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/10/03 03:08:19 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/10/03 21:37:54 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ int	ability_to_eat(t_philo *philo)
 		print_message(philo->program, philo, "died", philo->id);
 		philo->program->no_print = 1;
 		pthread_mutex_unlock(&(philo->program->death_lock));
+		pthread_mutex_unlock(&(philo->program->forks_lock[philo->r_fork]));
+		pthread_mutex_unlock(&(philo->program->forks_lock[philo->l_fork]));
 		return (0);
 	}
 	return (1);
@@ -82,7 +84,9 @@ int	eat(t_philo *philo)
 	else
 		even_philos(program, philo);
 	if (check_death_main(philo))
-		return (print_message(philo->program, philo, "died", philo->id), 0);
+		return (print_message(philo->program, philo, "died", philo->id),
+			pthread_mutex_unlock(&(program->forks_lock[philo->r_fork])),
+			pthread_mutex_unlock(&(program->forks_lock[philo->l_fork])), 0);
 	philo->eating++;
 	if (!waiting(philo->time_to_eat, philo))
 		return (0);

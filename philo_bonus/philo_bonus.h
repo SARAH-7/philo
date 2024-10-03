@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:03:05 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/10/03 11:12:26 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/10/03 21:28:20 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_philos
 	sem_t				*write_lock;
 	sem_t				*death_lock;
 	sem_t				*forks_lock;
+	sem_t				*death_message_lock;
 }					t_philos;
 
 int			parsing_bonus(char **av);

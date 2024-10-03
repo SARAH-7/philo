@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 16:36:39 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/10/03 14:54:14 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/10/03 21:30:03 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,12 @@ void	exit_dining_bonus(t_philos *philo)
 		kill(philo->pid[i], SIGTERM);
 	sem_close(philo->write_lock);
 	sem_close(philo->death_lock);
+	sem_close(philo->death_message_lock);
 	sem_close(philo->forks_lock);
 	sem_unlink("write lock");
 	sem_unlink("death lock");
 	sem_unlink("forks lock");
+	sem_unlink("death message lock");
 	free(philo->pid);
 	exit(EXIT_SUCCESS);
 }

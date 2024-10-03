@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 18:49:02 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/10/03 14:37:13 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/10/03 21:18:13 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int	get_repeat_count(t_philos *philo)
 void	eat_bonus(t_philos *philo)
 {
 	check_death_main_bonus(philo);
-	sem_wait((philo->forks_lock));
 	if (philo->num_of_philos == 1)
 	{
 		waiting_bonus(philo->time_to_survive, philo);
@@ -35,6 +34,7 @@ void	eat_bonus(t_philos *philo)
 		sem_post((philo->death_lock));
 		return ;
 	}
+	sem_wait((philo->forks_lock));
 	print_message_bonus(philo, "has taken the fork", philo->id);
 	print_message_bonus(philo, "has taken the fork", philo->id);
 	print_message_bonus(philo, "is eating", philo->id);
