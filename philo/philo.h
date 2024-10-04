@@ -75,4 +75,5 @@ int			ability_to_eat(t_philo *philo);
 void		exit_dining(t_program *program);
 int			check_death_main(t_philo *philo);
 void		*routine(void *pointer);
+void	*ft_calloc(size_t count, size_t size);
 #endif

@@ -65,7 +65,7 @@ void	init_program(t_program *program, char **av)
 	program->eating_counter = 0;
 	program->no_print = 0;
 	program->all_ate_flag = 0;
-	program->forks = malloc(sizeof(int) * (program->num_of_philos + 1));
+	program->forks = ft_calloc((program->num_of_philos + 1), sizeof(int));
 	i = 0;
 	while (++i <= program->num_of_philos)
 		program->forks[i] = 0;

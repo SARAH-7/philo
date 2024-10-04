@@ -24,10 +24,10 @@ int	main(int ac, char **av)
 	num_of_philos = atoi(av[1]);
 	if (num_of_philos <= 0)
 		return (write(2, "Invalid Num of Philosophers\n", 28), 1);
-	program.philos = malloc(sizeof(t_philo) * (num_of_philos + 1));
+	program.philos = ft_calloc((num_of_philos + 1), sizeof(t_philo));
 	if (!program.philos)
 		return (write(2, "Memory Allocation Failed\n", 26), 1);
-	program.forks_lock = malloc(sizeof(pthread_mutex_t) * (num_of_philos + 1));
+	program.forks_lock = ft_calloc((num_of_philos + 1), sizeof(pthread_mutex_t));
 	if (!program.forks_lock)
 		return (write(2, "Memory Allocation Failed\n", 26)
 			, free(program.philos), 1);
@@ -35,5 +35,6 @@ int	main(int ac, char **av)
 	call_to_action(&program);
 	free(program.philos);
 	free(program.forks_lock);
+	free(program.forks);
 	return (0);
 }

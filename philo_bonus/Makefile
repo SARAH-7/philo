@@ -21,14 +21,14 @@ SRC = main_bonus.c parsing_bonus.c utils_bonus.c program_init_bonus.c program_bo
 
 INCLUDE = -pthread
 
-CLANG = clang
+CC = cc
 
 OBJS = $(SRC:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@$(CLANG) $(INCLUDE) $(FLAGS) -o $(NAME) $(OBJS)
+	@$(CC) $(INCLUDE) $(FLAGS) -o $(NAME) $(OBJS)
 
 clean:
 	@rm -f $(OBJS)
@@ -41,4 +41,4 @@ re: fclean all
 .PHONY: all clean fclean re debug
 
 %.o: %.c $(HEADER)
-	$(CLANG) $(INCLUDE) $(FLAGS) -c $< -o $(@)
+	$(CC) $(INCLUDE) $(FLAGS) -c $< -o $(@)
