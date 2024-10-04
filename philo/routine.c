@@ -39,10 +39,10 @@ int	ability_to_eat(t_philo *philo)
 		pthread_mutex_lock(&(philo->program->death_lock));
 		philo->program->dead_flag = 1;
 		print_message(philo->program, philo, "died", philo->id);
+		pthread_mutex_lock(&(philo->program->death_message_lock));
 		philo->program->no_print = 1;
+		pthread_mutex_unlock(&(philo->program->death_message_lock));
 		pthread_mutex_unlock(&(philo->program->death_lock));
-		pthread_mutex_unlock(&(philo->program->forks_lock[philo->r_fork]));
-		pthread_mutex_unlock(&(philo->program->forks_lock[philo->l_fork]));
 		return (0);
 	}
 	return (1);
@@ -84,12 +84,22 @@ int	eat(t_philo *philo)
 	else
 		even_philos(program, philo);
 	if (check_death_main(philo))
-		return (print_message(philo->program, philo, "died", philo->id),
-			pthread_mutex_unlock(&(program->forks_lock[philo->r_fork])),
-			pthread_mutex_unlock(&(program->forks_lock[philo->l_fork])), 0);
+	{
+		program->forks[philo->r_fork] = 0;
+		program->forks[philo->l_fork] = 0;
+		pthread_mutex_unlock(&(program->forks_lock[philo->r_fork]));
+		pthread_mutex_unlock(&(program->forks_lock[philo->l_fork]));
+		return (print_message(philo->program, philo, "died", philo->id), 0);
+	}
 	philo->eating++;
 	if (!waiting(philo->time_to_eat, philo))
+	{
+		program->forks[philo->r_fork] = 0;
+		pthread_mutex_unlock(&(program->forks_lock[philo->r_fork]));
+		program->forks[philo->l_fork] = 0;
+		pthread_mutex_unlock(&(program->forks_lock[philo->l_fork]));
 		return (0);
+	}
 	philo->last_meal = get_current_time();
 	program->forks[philo->r_fork] = 0;
 	pthread_mutex_unlock(&(program->forks_lock[philo->r_fork]));

@@ -26,34 +26,36 @@ void	left_fork(t_program *program, t_philo *philo)
 
 void	odd_philos(t_program *program, t_philo *philo)
 {
-	pthread_mutex_lock(&(program->forks_lock[philo->r_fork]));
-	if (program->forks[philo->r_fork] == 0 && program->num_of_philos != 1)
-	{
-		program->forks[philo->r_fork] = 1;
-		print_message(program, philo, "has taken the fork", philo->id);
-	}
-	else
-	{
-		if (program->num_of_philos == 1)
-		{
-			waiting(philo->time_to_survive, philo);
-			pthread_mutex_lock(&(program->death_lock));
-			program->dead_flag = 1;
-			pthread_mutex_unlock(&(program->death_lock));
-		}
-		pthread_mutex_unlock(&(program->forks_lock[philo->r_fork]));
+    pthread_mutex_lock(&(program->forks_lock[philo->r_fork]));
+    if (program->forks[philo->r_fork] == 0 && program->num_of_philos != 1)
+    {
+        program->forks[philo->r_fork] = 1;
+        print_message(program, philo, "has taken the fork", philo->id);
+    }
+    else
+    {
+        if (program->num_of_philos == 1)
+        {
+            waiting(philo->time_to_survive, philo);
+            pthread_mutex_lock(&(program->death_lock));
+            program->dead_flag = 1;
+            pthread_mutex_unlock(&(program->death_lock));
+        }
+        pthread_mutex_unlock(&(program->forks_lock[philo->r_fork]));
+        return ;
+    }
+    left_fork(program, philo);
+    print_message(program, philo, "is eating", philo->id);
+    if (!ability_to_eat(philo))
+    {
 		return ;
-	}
-	left_fork(program, philo);
-	print_message(program, philo, "is eating", philo->id);
-	if (!ability_to_eat(philo))
-	{
-		program->forks[philo->r_fork] = 0;
-		pthread_mutex_unlock(&(program->forks_lock[philo->r_fork]));
-		program->forks[philo->l_fork] = 0;
-		pthread_mutex_unlock(&(program->forks_lock[philo->l_fork]));
-	}
+        // program->forks[philo->r_fork] = 0;
+        // pthread_mutex_unlock(&(program->forks_lock[philo->r_fork]));
+        // program->forks[philo->l_fork] = 0;
+        // pthread_mutex_unlock(&(program->forks_lock[philo->l_fork]));
+    }
 }
+
 
 void	right_fork(t_program *program, t_philo *philo)
 {
@@ -84,9 +86,10 @@ void	even_philos(t_program *program, t_philo *philo)
 	print_message(program, philo, "is eating", philo->id);
 	if (!ability_to_eat(philo))
 	{
-		program->forks[philo->l_fork] = 0;
-		pthread_mutex_unlock(&(program->forks_lock[philo->l_fork]));
-		program->forks[philo->r_fork] = 0;
-		pthread_mutex_unlock(&(program->forks_lock[philo->r_fork]));
+		return ;
+		// program->forks[philo->l_fork] = 0;
+		// pthread_mutex_unlock(&(program->forks_lock[philo->l_fork]));
+		// program->forks[philo->r_fork] = 0;
+		// pthread_mutex_unlock(&(program->forks_lock[philo->r_fork]));
 	}
 }
