@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:15:18 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/10/03 21:29:32 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/10/05 18:24:01 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int	init_program_bonus(t_philos *philos, char **av)
 	while (++i <= philos->forks_num)
 		philos->forks[i] = 0;
 	if (!init_semaphores(philos))
-		return (write(2, "Error creating semaphores\n", 26), free(philos->forks), 0);
+		return (write(2, "Error creating semaphores\n", 26),
+			free(philos->forks), 0);
 	return (1);
 }

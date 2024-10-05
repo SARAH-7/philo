@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:19:04 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/09/25 21:31:08 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/10/05 18:23:04 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,30 +67,4 @@ size_t	ft_strlen(const char *s)
 	while (s[i])
 		i++;
 	return (i);
-}
-
-void	ft_bzero(void *s, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < n)
-	{
-		*(char *)s = 0;
-		s = (char *)s + 1;
-		i++;
-	}
-}
-
-void	*ft_calloc(size_t count, size_t size)
-{
-	char	*r;
-
-	if (size != 0 && count > UINT_MAX / size)
-		return (NULL);
-	r = malloc(count * size);
-	if (r == NULL)
-		return (NULL);
-	ft_bzero(r, count * size);
-	return (r);
 }

@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:03:05 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/10/01 20:58:40 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/10/05 18:18:44 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ void		print_message(t_program *program, t_philo *philo,
 int			dead_loop(t_philo *philo);
 void		even_philos(t_program *program, t_philo *philo);
 void		odd_philos(t_program *program, t_philo *philo);
-int			ability_to_eat(t_philo *philo);
+void		ability_to_eat(t_philo *philo);
 void		exit_dining(t_program *program);
 int			check_death_main(t_philo *philo);
 void		*routine(void *pointer);
-void	*ft_calloc(size_t count, size_t size);
+void		*ft_calloc(size_t count, size_t size);
 #endif
