@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 04:08:04 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/10/05 18:22:33 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/10/05 18:31:54 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	odd_philos(t_program *program, t_philo *philo)
 	{
 		if (program->num_of_philos == 1)
 		{
+			print_message(program, philo, "has taken the fork", philo->id);
 			waiting(philo->time_to_survive, philo);
 			pthread_mutex_lock(&(program->death_lock));
 			program->dead_flag = 1;

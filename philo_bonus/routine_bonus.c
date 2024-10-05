@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:56 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/10/03 21:30:37 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/10/05 18:38:36 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	check_death_main_bonus(t_philos *philo)
 	if (philo->dead_flag)
 	{
 		print_message_bonus(philo, "died", philo->id);
+		philo->no_print = 1;
 		exit(1);
 	}
 	sem_post(philo->death_lock);
@@ -38,7 +39,6 @@ void	ability_to_eat_bonus(t_philos *philo)
 		philo->no_print = 1;
 		sem_post(philo->death_lock);
 		sem_post((philo->forks_lock));
-		exit(1);
 	}
 }
 
