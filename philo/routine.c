@@ -69,8 +69,11 @@ int	eat(t_philo *philo)
 	else
 		even_philos(program, philo);
 	if (check_death_main(philo))
-		return (release_forks(program, philo),
-			print_message(philo->program, philo, "died", philo->id), 0);
+	{
+		if (program->num_of_philos != 1)
+			release_forks(program, philo);
+		return (print_message(philo->program, philo, "died", philo->id), 0);
+	}
 	philo->eating++;
 	if (!waiting(philo->time_to_eat, philo))
 		return (release_forks(program, philo), 0);

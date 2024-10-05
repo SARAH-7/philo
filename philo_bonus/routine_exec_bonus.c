@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 18:49:02 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/10/03 21:18:13 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/10/07 14:08:19 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	eat_bonus(t_philos *philo)
 		return ;
 	}
 	sem_wait((philo->forks_lock));
+	sem_wait((philo->forks_lock));
 	print_message_bonus(philo, "has taken the fork", philo->id);
 	print_message_bonus(philo, "has taken the fork", philo->id);
 	print_message_bonus(philo, "is eating", philo->id);
@@ -44,6 +45,7 @@ void	eat_bonus(t_philos *philo)
 	philo->eating++;
 	waiting_bonus(philo->time_to_eat, philo);
 	philo->last_meal = get_current_time_bonus();
+	sem_post(philo->forks_lock);
 	sem_post(philo->forks_lock);
 	check_death_main_bonus(philo);
 }

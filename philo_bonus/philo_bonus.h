@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:03:05 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/10/03 21:28:20 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/10/07 14:26:46 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ typedef struct s_philos
 {
 	int					eating;
 	long long			last_meal;
-	int					forks_num;
 	long long			start_time;
 	long long			time_to_survive;
 	int					num_times_to_eat;

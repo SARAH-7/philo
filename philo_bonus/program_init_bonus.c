@@ -6,7 +6,7 @@
 /*   By: sbakhit <sbakhit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:15:18 by sbakhit           #+#    #+#             */
-/*   Updated: 2024/10/05 18:24:01 by sbakhit          ###   ########.fr       */
+/*   Updated: 2024/10/07 14:27:08 by sbakhit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	init_semaphores(t_philos *philos)
 	philos->death_message_lock = sem_open("death lock", O_CREAT, 0644,
 			1);
 	philos->forks_lock = sem_open("forks lock", O_CREAT, 0644,
-			philos->forks_num);
+			philos->num_of_philos);
 	if (philos->write_lock == SEM_FAILED || philos->death_lock == SEM_FAILED
 		|| philos->forks_lock == SEM_FAILED
 		|| philos->death_message_lock == SEM_FAILED)
@@ -43,9 +43,6 @@ void	init_philos(t_philos *philos, char **av)
 	else
 		philos->num_times_to_eat = -1;
 	philos->eating = 0;
-	philos->forks_num = philos->num_of_philos / 2;
-	if (philos->forks_num == 0)
-		philos->forks_num = 1;
 	philos->last_meal = 0;
 	philos->pid = 0;
 	philos->id = 0;
@@ -61,10 +58,10 @@ int	init_program_bonus(t_philos *philos, char **av)
 	philos->start_time = 0;
 	init_philos(philos, av);
 	i = 0;
-	philos->forks = malloc(sizeof(int) * (philos->forks_num + 1));
+	philos->forks = malloc(sizeof(int) * (philos->num_of_philos + 1));
 	if (!philos->forks)
 		return (0);
-	while (++i <= philos->forks_num)
+	while (++i <= philos->num_of_philos)
 		philos->forks[i] = 0;
 	if (!init_semaphores(philos))
 		return (write(2, "Error creating semaphores\n", 26),
