@@ -15,16 +15,18 @@
 int	main(int ac, char **av)
 {
 	t_philos	philos;
+	int			*pids;
 
 	if (ac != 5 && ac != 6)
 		return (write(2, "Invalid Num of Arguments\n", 25), 1);
 	if (!parsing_bonus(av))
 		return (1);
 	philos.num_of_philos = ft_atoi_bonus(av[1]);
-	philos.pid = malloc(sizeof(int) * (philos.num_of_philos + 1));
-	if (!philos.pid)
+	pids = malloc(sizeof(int) * (philos.num_of_philos + 1));
+	if (!pids)
 		return (1);
-	init_program_bonus(&philos, av);
-	call_to_action_bonus(&philos);
+	if (!init_program_bonus(&philos, av))
+		return (free(pids), 1);
+	call_to_action_bonus(&philos, pids);
 	return (0);
 }

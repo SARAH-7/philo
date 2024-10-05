@@ -28,6 +28,7 @@ void	eat_bonus(t_philos *philo)
 	check_death_main_bonus(philo);
 	if (philo->num_of_philos == 1)
 	{
+		print_message_bonus(philo, "has taken the fork", philo->id);
 		waiting_bonus(philo->time_to_survive, philo);
 		sem_wait((philo->death_lock));
 		philo->dead_flag = 1;
@@ -47,10 +48,11 @@ void	eat_bonus(t_philos *philo)
 	check_death_main_bonus(philo);
 }
 
-void	*routine_bonus(t_philos *philo)
+void	*routine_bonus(t_philos *philo, int *pid)
 {
 	int			repeat;
 
+	free(pid);
 	repeat = get_repeat_count(philo);
 	while (--repeat)
 	{
@@ -64,6 +66,9 @@ void	*routine_bonus(t_philos *philo)
 		check_death_main_bonus(philo);
 	}
 	if (philo->num_times_to_eat != -1 && repeat == 0)
+	{
 		philo->all_ate_flag = 1;
+		exit(0);
+	}
 	return (NULL);
 }

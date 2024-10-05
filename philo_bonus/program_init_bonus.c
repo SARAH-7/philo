@@ -47,9 +47,11 @@ void	init_philos(t_philos *philos, char **av)
 	if (philos->forks_num == 0)
 		philos->forks_num = 1;
 	philos->last_meal = 0;
+	philos->pid = 0;
+	philos->id = 0;
 }
 
-void	init_program_bonus(t_philos *philos, char **av)
+int	init_program_bonus(t_philos *philos, char **av)
 {
 	int	i;
 
@@ -61,19 +63,10 @@ void	init_program_bonus(t_philos *philos, char **av)
 	i = 0;
 	philos->forks = malloc(sizeof(int) * (philos->forks_num + 1));
 	if (!philos->forks)
-	{
-		free(philos->pid);
-		exit(1);
-	}
+		return (0);
 	while (++i <= philos->forks_num)
-	{
-		philos->pid[i] = 1;
 		philos->forks[i] = 0;
-	}
 	if (!init_semaphores(philos))
-	{
-		write(2, "Error creating semaphores\n", 26);
-		free(philos->forks);
-		free(philos->pid);
-	}
+		return (write(2, "Error creating semaphores\n", 26), free(philos->forks), 0);
+	return (1);
 }

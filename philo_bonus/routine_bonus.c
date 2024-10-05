@@ -18,11 +18,7 @@ void	check_death_main_bonus(t_philos *philo)
 	if (philo->dead_flag)
 	{
 		print_message_bonus(philo, "died", philo->id);
-		sem_wait(philo->death_message_lock);
-		philo->no_print = 1;
-		sem_post(philo->death_message_lock);
-		sem_post(philo->death_lock);
-		exit_dining_bonus(philo);
+		exit(1);
 	}
 	sem_post(philo->death_lock);
 }
@@ -42,7 +38,7 @@ void	ability_to_eat_bonus(t_philos *philo)
 		philo->no_print = 1;
 		sem_post(philo->death_lock);
 		sem_post((philo->forks_lock));
-		exit_dining_bonus(philo);
+		exit(1);
 	}
 }
 
